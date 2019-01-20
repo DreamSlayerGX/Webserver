@@ -3,13 +3,15 @@ package util;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.json.JSONObject;
+
 import javafx.util.Pair;
 
 public class ServerMonitor {
 
-	private HashMap<Integer, String> employees;
-	private HashMap<Integer, String> cars;
-	private HashMap<Integer, String> sales;
+	private HashMap<Integer, JSONObject> employees;
+	private HashMap<Integer, JSONObject> cars;
+	private HashMap<Integer, JSONObject> sales;
 	
 	public ServerMonitor() {
 		employees = new HashMap<>();
@@ -19,30 +21,30 @@ public class ServerMonitor {
 		setUpData();
 	}
 
-	public synchronized HashMap<Integer, String> getEmployees() {
+	public synchronized HashMap<Integer, JSONObject> getEmployees() {
 		return employees;
 	}
 
-	public synchronized HashMap<Integer, String> getCars() {
+	public synchronized HashMap<Integer, JSONObject> getCars() {
 		return cars;
 	}
 
 	//TODO: Fix
-	public synchronized void addCar( HashMap<Integer, String> cars) {
+	public synchronized void addCar( HashMap<Integer, JSONObject> cars) {
 		this.cars = cars;
 	}
 
-	public synchronized HashMap<Integer, String> getSales() {
+	public synchronized HashMap<Integer, JSONObject> getSales() {
 		return sales;
 	}
 
 	//Performs the setup data for the server in the three data tables: 
 	//employee, cars, and sales
 	private void setUpData() {
-		employees.put(1, "Hjulia Styrén");
-		employees.put(2, "Antonia Cylinder");
-		employees.put(3, "Kalle Bromslöf");
-		employees.put(4, "Johan Sportratt");
+		employees.put(1, new JSONObject().put("name", "Hjulia Styrén").put("id", 1));
+		employees.put(2, new JSONObject().put("name", "Antonia Cylinder").put("id", 2));
+		employees.put(3, new JSONObject().put("name", "Kalle Bromslöf").put("id", 3));
+		employees.put(4, new JSONObject().put("name", "Johan Sportratt").put("id", 4));
 		
 	}
 	

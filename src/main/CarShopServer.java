@@ -9,15 +9,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+import org.json.JSONObject;
 
 import util.HttpParser;
 import util.ServerMonitor;
 
-public class CarShopServer extends Thread {
+public class CarShopServer {
 
 	public static final int PORT_NUMBER = 8888;
-	public static final String IP = "127.0.0.1";
+	public static final String IP = "localhost";
 
 	public static void main(String[] args) throws IOException {
 		new CarShopServer(IP, PORT_NUMBER);
@@ -41,40 +41,34 @@ public class CarShopServer extends Thread {
 		this.port = port;
 
 		monitor = new ServerMonitor();
-		
-
 		serverSocket = new ServerSocket(port);
-		System.out.println("Waiting for Client ...");
-		clientSocket = serverSocket.accept();
-		System.out.println("Client Connected");
-
-		start();
+		
+		System.out.println("Starting");
+		run();
 
 	}
 
 	public void run() {
 		try {
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			String input;
-
 			while (true) {
-
-				input = in.readLine();
+				clientSocket = serverSocket.accept();
+				PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+				BufferedReader in = new BufferedReader(
+						new InputStreamReader(clientSocket.getInputStream()));
+				
+				String input = in.readLine();
 
 				if (input != null) {
 					System.out.println("Input message: " + input);
 					String[] parsedInput = HttpParser.parseClientRequest(input);
-
-					System.out.println(parsedInput[0]);
 					
-					switch (parsedInput[0]) {
+					switch (parsedInput[0].toUpperCase()) {
 					case "GET":
 						String section = parsedInput[1].toLowerCase();
 						if (section.equals(EMPLOYEES))
-							out.println(getEmployees());
+							out.println(HttpParser.parseToJSON(monitor.getEmployees(), EMPLOYEES));
 						else if (section.equals(CARMODELS))
-							out.println(getCarModels());
+							out.println(HttpParser.parseToJSON(monitor.getCars(), CARMODELS));
 						else if (section.equals(TOTAL_SALES))
 							out.println(getTotalSales());
 						break;
@@ -88,41 +82,64 @@ public class CarShopServer extends Thread {
 					}
 
 				}
+				
+				out.flush();
+				out.close();
+				in.close();
 			}
 
 		} catch (Exception e) {
 			System.out.println("ERROR, shuting down!");
+			e.printStackTrace();
 			System.exit(1);
 		}
 	}
 
-	private String getCarModels() {
-		
-		
-		return null;
-	}
 
 	private String getTotalSales() {
+		
+		
+		
 		return null;
 	}
 
 	private void putInDatabase(String[] parsedInput) {
-
+		
+		
 	}
-
-
-	private String getEmployees() {
-		HashMap<Integer, String> employees = monitor.getEmployees();
-		if (employees.isEmpty())
-			return "{}";
-
-		ArrayList<String> toParse = new ArrayList<>();
-
-		for (int id : employees.keySet()) {
-			toParse.add("id," + id + ",name," + employees.get(id));
-		}
-
-		return HttpParser.parseToJSON(toParse, "employees");
-	}
+	
+	
+//	private String getCarModels() {
+//		HashMap<Integer, String> cars = monitor.getCars();
+//		if (cars.isEmpty())
+//			return "{}";
+//
+//		ArrayList<String> toParse = new ArrayList<>();
+//
+//		for (int id : cars.keySet()) {
+//			String value = cars.get(id);
+//			value.replace(" ", ,)
+//			toParse.add("id," + id + "," + value);
+//		}
+//
+//		return HttpParser.parseToJSON(toParse, "carmodels");
+//		
+//		return null;
+//	}
+//
+//
+//	private String getEmployees() {
+//		HashMap<Integer, JSONObject> employees = monitor.getEmployees();
+//		if (employees.isEmpty())
+//			return "{}";
+//
+//		ArrayList<String> toParse = new ArrayList<>();
+//
+//		for (int id : employees.keySet()) {
+//			toParse.add("id," + id + ",name," + employees.get(id));
+//		}
+//
+//		return HttpParser.parseToJSON(toParse, "employees");
+//	}
 
 }

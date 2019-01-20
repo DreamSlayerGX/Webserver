@@ -7,9 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-import javafx.util.Pair;
-
-public class CarShopClient extends Thread {
+public class CarShopClient {
 
 	public static void main(String[] args) throws IOException {
 		new CarShopClient(CarShopServer.IP, CarShopServer.PORT_NUMBER);
@@ -25,7 +23,7 @@ public class CarShopClient extends Thread {
 		this.port = port;
 		socket = new Socket(ip, port);
 
-		start();
+		run();
 
 	}
 
@@ -33,7 +31,8 @@ public class CarShopClient extends Thread {
 		try {
 			Scanner input = new Scanner(System.in);
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(socket.getInputStream()));
 			String fromServer;
 
 			while (true) {
