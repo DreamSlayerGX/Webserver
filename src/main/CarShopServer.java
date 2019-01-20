@@ -9,7 +9,9 @@ import java.net.Socket;
 
 import org.json.JSONArray;
 
-public class CarShopServer{
+import util.HttpParser;
+
+public class CarShopServer extends Thread{
 
 	public static final int PORT_NUMBER = 8888;
 	public static final String IP = "127.0.0.1";
@@ -20,12 +22,17 @@ public class CarShopServer{
 		
 	}
 	
+	public enum Actions{
+		EMPLOYEES, CARMODELS, TOTAL_SALES
+	};
 	
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
 
 	private String ip;
 	private int port;
+	
+	
 	
 	
 	public CarShopServer(String ip, int port) throws IOException {
@@ -37,26 +44,32 @@ public class CarShopServer{
 		System.out.println("Client Connected");
 		
 		
-		runServer();
+		start();
 		
 	}
 	
 	
-	private void runServer() throws IOException {
-		
+	public void run() {
+		try {
 		PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 		BufferedReader in = new BufferedReader(
 				new InputStreamReader(clientSocket.getInputStream()));
-		String inputString;
+			
+		String input;
 		
-		while(true) {
-			inputString = in.readLine();
-			if(inputString != null) {
-				System.out.println(inputString);
-				
+		input = in.readLine();
+		if(input != null) {
+			System.out.println("Input message: " + input);
+			String[] parsedInput = HttpParser.parseClientRequest(input);
+			
+			
+			
 			}
 			
 			
+		} catch (Exception e) {
+			System.out.println("ERROR, shuting down!");
+			System.exit(1);
 		}
 	}
 	
