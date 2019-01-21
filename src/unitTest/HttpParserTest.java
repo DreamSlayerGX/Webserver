@@ -11,14 +11,18 @@ import org.junit.jupiter.api.Test;
 
 import util.HttpParser;
 
+
+/*
+ * THIS TEST CASE IS NOT UP TO DATE WITH THE HTTPPARSER! THIS WILL YIELD
+ * FAILURES!
+ * 
+ * Due to a redesign of the HttpParser, these test are no longer compatable with
+ * the actual result. These tests are designed and used at the beginning, with
+ * an idea that didn't hold.
+ * 
+ * */
 class HttpParserTest {
 
-	@Test
-	public void parseClientRequestTest() {
-		
-
-	}
-	
 	@Test
 	public void parseToJSONTest() {
 		HashMap<Integer, JSONObject> toParseEmployees = new HashMap<>();

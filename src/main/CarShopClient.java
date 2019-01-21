@@ -9,19 +9,19 @@ import java.util.Scanner;
 
 public class CarShopClient {
 
-//	public static void main(String[] args) throws IOException {
-//		new CarShopClient(CarShopServer.IP, CarShopServer.PORT_NUMBER);
-//
-//	}
+	public static void main(String[] args) throws IOException {
+		new CarShopClient("127.0.0.1", CarShopServer.PORT_NUMBER);
+
+	}
 
 	private Socket socket;
 	private String ip;
-	private int port;
+	private String port;
 
-	public CarShopClient(String ip, int port) throws IOException {
+	public CarShopClient(String ip, String port) throws IOException {
 		this.ip = ip;
 		this.port = port;
-		socket = new Socket(ip, port);
+		socket = new Socket(ip, Integer.parseInt(port));
 
 		run();
 

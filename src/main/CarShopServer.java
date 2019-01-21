@@ -108,39 +108,4 @@ public class CarShopServer {
 		return null;
 	}
 
-	
-	
-//	private String getCarModels() {
-//		HashMap<Integer, String> cars = monitor.getCars();
-//		if (cars.isEmpty())
-//			return "{}";
-//
-//		ArrayList<String> toParse = new ArrayList<>();
-//
-//		for (int id : cars.keySet()) {
-//			String value = cars.get(id);
-//			value.replace(" ", ,)
-//			toParse.add("id," + id + "," + value);
-//		}
-//
-//		return HttpParser.parseToJSON(toParse, "carmodels");
-//		
-//		return null;
-//	}
-//
-//
-//	private String getEmployees() {
-//		HashMap<Integer, JSONObject> employees = monitor.getEmployees();
-//		if (employees.isEmpty())
-//			return "{}";
-//
-//		ArrayList<String> toParse = new ArrayList<>();
-//
-//		for (int id : employees.keySet()) {
-//			toParse.add("id," + id + ",name," + employees.get(id));
-//		}
-//
-//		return HttpParser.parseToJSON(toParse, "employees");
-//	}
-
 }
