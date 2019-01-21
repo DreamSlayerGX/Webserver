@@ -7,13 +7,13 @@ import org.json.JSONObject;
 
 import javafx.util.Pair;
 
-public class ServerMonitor {
+public class DataBase {
 
 	private HashMap<Integer, JSONObject> employees;
 	private HashMap<Integer, JSONObject> cars;
 	private HashMap<Integer, JSONObject> sales;
 	
-	public ServerMonitor() {
+	public DataBase() {
 		employees = new HashMap<>();
 		cars = new HashMap<>();
 		sales = new HashMap<>();

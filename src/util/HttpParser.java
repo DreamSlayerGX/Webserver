@@ -1,6 +1,5 @@
 package util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONArray;
@@ -31,9 +30,16 @@ public class HttpParser {
 			ja.put(toParse.get(id));
 		}
 		
-		//System.out.println(main.put(type, ja).toString());
 		
-		return main.put(type, ja).toString();
+		//System.out.println(main.put(type, ja).toString());
+		return parseToHTTP(main.put(type, ja).toString());
+	}
+	
+	private static String parseToHTTP(String json) {
+			String headerMain =	"HTTP/1.1 200 OK\r\n"; 
+			String headerType =	"Content-Type: application/json; charset=utf-8\r\n";
+			
+			return headerMain + headerType + "\n" + json;
 	}
 	
 

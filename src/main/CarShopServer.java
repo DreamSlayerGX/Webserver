@@ -6,13 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import org.json.JSONObject;
-
+import util.DataBase;
 import util.HttpParser;
-import util.ServerMonitor;
 
 public class CarShopServer {
 
@@ -31,7 +27,7 @@ public class CarShopServer {
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
 
-	private ServerMonitor monitor;
+	private DataBase dataBase;
 
 	private String ip;
 	private int port;
@@ -40,7 +36,7 @@ public class CarShopServer {
 		this.ip = ip;
 		this.port = port;
 
-		monitor = new ServerMonitor();
+		dataBase = new DataBase();
 		serverSocket = new ServerSocket(port);
 		
 		System.out.println("Starting");
@@ -57,18 +53,21 @@ public class CarShopServer {
 						new InputStreamReader(clientSocket.getInputStream()));
 				
 				String input = in.readLine();
-
 				if (input != null) {
+					
 					System.out.println("Input message: " + input);
 					String[] parsedInput = HttpParser.parseClientRequest(input);
-					
+					String temp = "";
 					switch (parsedInput[0].toUpperCase()) {
 					case "GET":
 						String section = parsedInput[1].toLowerCase();
-						if (section.equals(EMPLOYEES))
-							out.println(HttpParser.parseToJSON(monitor.getEmployees(), EMPLOYEES));
+						if (section.equals(EMPLOYEES)) {
+							//out.println(HttpParser.parseToJSON(dataBase.getEmployees(), EMPLOYEES));
+							temp = HttpParser.parseToJSON(dataBase.getEmployees(), EMPLOYEES);
+							out.println(temp);
+						}
 						else if (section.equals(CARMODELS))
-							out.println(HttpParser.parseToJSON(monitor.getCars(), CARMODELS));
+							out.println(HttpParser.parseToJSON(dataBase.getCars(), CARMODELS));
 						else if (section.equals(TOTAL_SALES))
 							out.println(getTotalSales());
 						break;
@@ -81,7 +80,9 @@ public class CarShopServer {
 						break;
 					}
 
+					System.out.println("Output message: " + temp);
 				}
+				
 				
 				out.flush();
 				out.close();
