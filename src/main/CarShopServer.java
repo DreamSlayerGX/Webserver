@@ -94,6 +94,7 @@ public class CarShopServer {
 						break;
 						
 					default:
+						temp = "HTTP/1.1 204 No Content\r\n";
 						break;
 					}
 					
