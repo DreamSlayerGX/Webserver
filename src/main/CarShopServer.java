@@ -61,14 +61,13 @@ public class CarShopServer {
 					case "GET":
 						if (section.equals(EMPLOYEES)) {
 							temp = HttpParser.parseToJSON(dataBase.getEmployees(), EMPLOYEES);
-							out.println(temp);
 						}
 						else if (section.equals(CARMODELS)) {
 							temp = HttpParser.parseToJSON(dataBase.getCars(), CARMODELS);
 							
 						}
 						else if (section.equals(TOTAL_SALES)) {
-							temp = HttpParser.parseToJSON(dataBase.getEmployees(), EMPLOYEES);
+							temp = HttpParser.parseToJSON(dataBase.getSales(), TOTAL_SALES);
 							
 						}
 						break;
@@ -84,6 +83,7 @@ public class CarShopServer {
 					default:
 						break;
 					}
+					
 					out.println(temp);
 					System.out.println("Output message: " + temp);
 				}
@@ -102,7 +102,6 @@ public class CarShopServer {
 
 
 	private String getTotalSales() {
-		
 		
 		
 		return null;
