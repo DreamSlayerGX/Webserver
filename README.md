@@ -8,4 +8,6 @@ To run the server, simply run the class *CarShopServer.java* and connect using *
 
 The server has basic data implemented, which is used primarily for testing. In other words, it is not a fresh, empty server. If the user wants to errase the data, she can remove "TESTING" as second argument when running the server. The data is found in *data.json* which is provided in the repo.
 
+The file *CarShopClient.java* is a client for testing in the IDE and **NOT** part of the main program.
+
 The supplied JAR-file is used to create JSON-objects in the server.
