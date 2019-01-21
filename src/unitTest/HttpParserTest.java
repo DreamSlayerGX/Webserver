@@ -15,23 +15,7 @@ class HttpParserTest {
 
 	@Test
 	public void parseClientRequestTest() {
-		String[] result1 = HttpParser.parseClientRequest("GET / employees");
-		String[] expected1 = { "GET", "employees" };
-
-		assertEquals(expected1.length, result1.length);
-		for (int i = 0; i < expected1.length; i++) {
-			assertEquals(expected1[i], result1[i]);
-
-		}
-
-		String[] result2 = HttpParser.parseClientRequest("POST /carmodels Volvo V70");
-		String[] expected2 = { "POST", "carmodels", "Volvo", "V70" };
-
-		assertEquals(expected2.length, result2.length);
-		for (int i = 0; i < expected1.length; i++) {
-			assertEquals(expected2[i], result2[i]);
-
-		}
+		
 
 	}
 	

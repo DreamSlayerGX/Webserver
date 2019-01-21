@@ -21,17 +21,21 @@ public class DataBase {
 		setUpData();
 	}
 
-	public synchronized HashMap<Integer, JSONObject> getEmployees() {
+	public HashMap<Integer, JSONObject> getEmployees() {
 		return employees;
 	}
 
-	public synchronized HashMap<Integer, JSONObject> getCars() {
+	public HashMap<Integer, JSONObject> getCars() {
 		return cars;
 	}
 
-	//TODO: Fix
-	public synchronized void addCar( HashMap<Integer, JSONObject> cars) {
-		this.cars = cars;
+	
+	public boolean addCar(int id, JSONObject json) {
+		if(cars.containsKey(id))
+			return false;
+		
+		cars.put(id, json);
+		return true;
 	}
 
 	public synchronized HashMap<Integer, JSONObject> getSales() {

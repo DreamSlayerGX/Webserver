@@ -9,10 +9,10 @@ import java.util.Scanner;
 
 public class CarShopClient {
 
-	public static void main(String[] args) throws IOException {
-		new CarShopClient(CarShopServer.IP, CarShopServer.PORT_NUMBER);
-
-	}
+//	public static void main(String[] args) throws IOException {
+//		new CarShopClient(CarShopServer.IP, CarShopServer.PORT_NUMBER);
+//
+//	}
 
 	private Socket socket;
 	private String ip;

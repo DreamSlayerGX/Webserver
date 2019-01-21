@@ -9,37 +9,32 @@ import java.net.Socket;
 
 import util.DataBase;
 import util.HttpParser;
+import util.HttpPayload;
 
 public class CarShopServer {
 
-	public static final int PORT_NUMBER = 8888;
-	public static final String IP = "localhost";
+	public static final String PORT_NUMBER = "8888";
 
 	public static void main(String[] args) throws IOException {
-		new CarShopServer(IP, PORT_NUMBER);
+		new CarShopServer(PORT_NUMBER);
 
 	}
 
-	private static final String EMPLOYEES = "employees";
-	private static final String CARMODELS = "carmodels";
-	private static final String TOTAL_SALES = "total_sales";
+	private static final String EMPLOYEES = "/employees";
+	private static final String CARMODELS = "/carmodels";
+	private static final String TOTAL_SALES = "/total_sales";
 
 	private ServerSocket serverSocket;
 	private Socket clientSocket;
 
 	private DataBase dataBase;
 
-	private String ip;
-	private int port;
-
-	public CarShopServer(String ip, int port) throws IOException {
-		this.ip = ip;
-		this.port = port;
+	public CarShopServer(String port) throws IOException {
 
 		dataBase = new DataBase();
-		serverSocket = new ServerSocket(port);
+		serverSocket = new ServerSocket(Integer.parseInt(port));
 		
-		System.out.println("Starting");
+		System.out.println("Starting ...");
 		run();
 
 	}
@@ -52,37 +47,46 @@ public class CarShopServer {
 				BufferedReader in = new BufferedReader(
 						new InputStreamReader(clientSocket.getInputStream()));
 				
-				String input = in.readLine();
+				HttpPayload input = HttpParser.parseClientRequest(in);
 				if (input != null) {
 					
-					System.out.println("Input message: " + input);
-					String[] parsedInput = HttpParser.parseClientRequest(input);
+					String[] statusLine = input.getStatusLine();
+					
+					System.out.println("Input message: " + statusLine[0] + " " + statusLine[1]);
+					
 					String temp = "";
-					switch (parsedInput[0].toUpperCase()) {
+					String section = statusLine[1].toLowerCase();
+					
+					switch (statusLine[0].toUpperCase()) {
 					case "GET":
-						String section = parsedInput[1].toLowerCase();
 						if (section.equals(EMPLOYEES)) {
-							//out.println(HttpParser.parseToJSON(dataBase.getEmployees(), EMPLOYEES));
 							temp = HttpParser.parseToJSON(dataBase.getEmployees(), EMPLOYEES);
 							out.println(temp);
 						}
-						else if (section.equals(CARMODELS))
-							out.println(HttpParser.parseToJSON(dataBase.getCars(), CARMODELS));
-						else if (section.equals(TOTAL_SALES))
-							out.println(getTotalSales());
+						else if (section.equals(CARMODELS)) {
+							temp = HttpParser.parseToJSON(dataBase.getCars(), CARMODELS);
+							
+						}
+						else if (section.equals(TOTAL_SALES)) {
+							temp = HttpParser.parseToJSON(dataBase.getEmployees(), EMPLOYEES);
+							
+						}
 						break;
 
 					case "POST":
-						putInDatabase(parsedInput);
+						if(section.equals(CARMODELS)) {
+							temp = HttpParser.parseToHTTP(input.getMessage(), CARMODELS);
+							dataBase.addCar(input.getJsonID(), input.getMessage());
+							
+						}
 						break;
 						
 					default:
 						break;
 					}
-
+					out.println(temp);
 					System.out.println("Output message: " + temp);
 				}
-				
 				
 				out.flush();
 				out.close();
@@ -104,10 +108,6 @@ public class CarShopServer {
 		return null;
 	}
 
-	private void putInDatabase(String[] parsedInput) {
-		
-		
-	}
 	
 	
 //	private String getCarModels() {
