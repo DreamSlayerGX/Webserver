@@ -16,7 +16,7 @@ import util.HttpParser;
  * THIS TEST CASE IS NOT UP TO DATE WITH THE HTTPPARSER! THIS WILL YIELD
  * FAILURES!
  * 
- * Due to a redesign of the HttpParser, these test are no longer compatable with
+ * Due to a redesign of the HttpParser, these test are no longer compatible with
  * the actual result. These tests are designed and used at the beginning, with
  * an idea that didn't hold.
  * 

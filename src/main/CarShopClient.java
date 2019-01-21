@@ -9,8 +9,10 @@ import java.util.Scanner;
 
 public class CarShopClient {
 
+	public static final String PORT_NUMBER = "8888";
+	
 	public static void main(String[] args) throws IOException {
-		new CarShopClient("127.0.0.1", CarShopServer.PORT_NUMBER);
+		new CarShopClient("127.0.0.1", PORT_NUMBER);
 
 	}
 

@@ -3,9 +3,11 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 import util.DataBase;
 import util.HttpParser;
@@ -13,11 +15,12 @@ import util.HttpPayload;
 
 public class CarShopServer {
 
-	public static final String PORT_NUMBER = "8888";
-
 	public static void main(String[] args) throws IOException {
-		new CarShopServer(PORT_NUMBER);
-
+		if(args.length < 2)
+			new CarShopServer(args[0], "clean");
+		else
+			new CarShopServer(args[0], args[1]);
+		
 	}
 
 	private static final String EMPLOYEES = "/employees";
@@ -29,30 +32,40 @@ public class CarShopServer {
 
 	private DataBase dataBase;
 
-	public CarShopServer(String port) throws IOException {
+	public CarShopServer(String port, String clean) throws IOException {
 
-		dataBase = new DataBase();
 		serverSocket = new ServerSocket(Integer.parseInt(port));
 		
-		System.out.println("Starting ...");
+		if(clean.equals("TESTING")) {
+			dataBase = new DataBase(true);
+			System.out.println("Starting with data...");
+				
+			}
+		else {
+			dataBase = new DataBase(false);
+			System.out.println("Starting with no data ...");
+		}
+		
 		run();
 
 	}
+	
+	
 
 	public void run() {
 		try {
 			while (true) {
 				clientSocket = serverSocket.accept();
-				PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+				PrintWriter out = new PrintWriter(new OutputStreamWriter(
+						clientSocket.getOutputStream(), StandardCharsets.UTF_8));
 				BufferedReader in = new BufferedReader(
-						new InputStreamReader(clientSocket.getInputStream()));
+						new InputStreamReader(
+								clientSocket.getInputStream(), StandardCharsets.UTF_8));
 				
 				HttpPayload input = HttpParser.parseClientRequest(in);
 				if (input != null) {
 					
 					String[] statusLine = input.getStatusLine();
-					
-					System.out.println("Input message: " + statusLine[0] + " " + statusLine[1]);
 					
 					String temp = "";
 					String section = statusLine[1].toLowerCase();
@@ -85,7 +98,6 @@ public class CarShopServer {
 					}
 					
 					out.println(temp);
-					System.out.println("Output message: " + temp);
 				}
 				
 				out.flush();
@@ -98,13 +110,6 @@ public class CarShopServer {
 			e.printStackTrace();
 			System.exit(1);
 		}
-	}
-
-
-	private String getTotalSales() {
-		
-		
-		return null;
 	}
 
 }

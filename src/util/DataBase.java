@@ -10,12 +10,13 @@ public class DataBase {
 	private HashMap<Integer, JSONObject> cars;
 	private HashMap<Integer, JSONObject> sales;
 	
-	public DataBase() {
+	public DataBase(boolean testing) {
 		employees = new HashMap<>();
 		cars = new HashMap<>();
 		sales = new HashMap<>();
 		
-		setUpData();
+		if(testing)
+			setUpData();
 	}
 
 	/**
