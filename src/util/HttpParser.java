@@ -111,6 +111,8 @@ public class HttpParser {
 	
 	
 	private static Pair<Integer, JSONObject> createJSON(String text) {
+		try {
+			
 		JSONObject temp = new JSONObject(text);
 		JSONObject json = null;
 		
@@ -121,6 +123,11 @@ public class HttpParser {
 		int id = (int)json.get("id");
 		
 		return new Pair<Integer, JSONObject>(id, json);
+
+		}catch(org.json.JSONException e) {
+			return null;
+		}
+		
 	}
 	
 	private static String parseToHTTP(String json) {
