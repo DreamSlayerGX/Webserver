@@ -44,7 +44,7 @@ public class DataBase {
 	 * @return false if the id is already occupied, otherwise true
 	 */
 	public boolean addCar(int id, JSONObject json) {
-		if(cars.containsKey(id))
+		if(id < 0 || cars.containsKey(id))
 			return false;
 		
 		cars.put(id, json);
@@ -61,15 +61,15 @@ public class DataBase {
 		HashMap<Integer, Integer> carPrices = new HashMap<>();
 		
 		for(int carID : cars.keySet()) {
-			int carPrice = (int)cars.get(carID).get("price");
+			int carPrice = cars.get(carID).getInt("price");
 			carPrices.put(carID, carPrice);
 		}
 		
 		float[] employeeSales = new float[employees.size()];
 		
 		for (int saleID : sales.keySet()) {
-			int employeeID = (int)sales.get(saleID).get("employee_id");
-			int carID = (int)sales.get(saleID).get("carmodel_id");
+			int employeeID = sales.get(saleID).getInt("employee_id");
+			int carID = sales.get(saleID).getInt("carmodel_id");
 			
 			employeeSales[employeeID-1] += carPrices.get(carID);
 			
